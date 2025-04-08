@@ -9,6 +9,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"go.uber.org/zap/zapcore"
 
 	"github.com/result17/codeBeatCli/internal/version"
 	"github.com/result17/codeBeatCli/pkg/exitcode"
@@ -22,23 +23,26 @@ func RunE(cmd *cobra.Command, v *viper.Viper) error {
 	ctx := context.Background()
 	// add logger to context
 	log.Extract(ctx)
-	logger, err := SetupLogging(ctx)
+	logger, err := SetupLogging(ctx, v)
 	if err != nil {
 		stdlog.Fatalf("failde to setup logging: %s", err)
 	}
 	ctx = log.ToContxt(ctx, logger)
-
 	if v.GetBool("version") {
 		logger.Debugln("command: version")
 		return runCmd(ctx, v, version.RunVersion)
 	}
+
 	return exitcode.Err{Code: exitcode.ErrGeneric}
 }
 
 // TODO setup logger output file path
-func SetupLogging(ctx context.Context) (*log.Logger, error) {
+func SetupLogging(ctx context.Context, v *viper.Viper) (*log.Logger, error) {
 	var destOutput io.Writer = os.Stdout
 	l := log.New(destOutput)
+	if v.GetBool("dlog") {
+		l.SetAtomicLevel(zapcore.DebugLevel)
+	}
 	return l, nil
 }
 

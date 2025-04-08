@@ -40,6 +40,12 @@ func setFlags(cmd *cobra.Command, v *viper.Viper) {
 	flags := cmd.Flags()
 
 	flags.BoolP("version", "v", false, "Print CodeBeatCli version, and exit.")
+	flags.Bool("dlog", false, "set debugger logger level")
+
+	err := v.BindPFlags(flags)
+	if err != nil {
+		log.Fatalf("failed to bind cobra flags to viper: %s", err)
+	}
 }
 
 func Execute() {
