@@ -5,7 +5,7 @@ BINARY_NAME?=codeBeatCli
 BUILD_DIR?="./build"
 CGO_ENABLED?=0
 COMMIT?=$(shell git rev-parse --short HEAD)
-DATE?=$(shell date -u '+%Y-%m-%dT%H:%M:%S %Z')
+DATE?=$(shell date '+%Y-%m-%dT%H:%M:%S %Z')
 REPO=github.com/result17/codeBeatCli
 VERSION?=<local-build>
 
@@ -22,8 +22,8 @@ GOGET=$(GOCMD) get
 # get GOPATH, GOOS and GOARCH according to OS
 ifeq ($(OS),Windows_NT) # is Windows_NT on XP, 2000, 7, Vista, 10...
     GOPATH=$(go env GOPATH)
-	GOOS=$(shell cmd /c go env GOOS)
-	GOARCH=$(shell cmd /c go env GOARCH)
+	GOOS := $(shell cmd /c go env GOOS)
+	GOARCH := $(shell cmd /c go env GOARCH)
 else
     GOPATH=$(shell go env GOPATH)
 	GOOS=$(shell go env GOOS)
@@ -37,13 +37,13 @@ build-windows-amd64:
 .PHONY: build
 build:
 	CGO_ENABLED=$(CGO_ENABLED) GOOS=$(GOOS) GOARCH=$(GOARCH) $(GOBUILD) -v \
-		-ldflags "${LD_FLAGS} -X ${REPO}/pkg/version.OS=$(GOOS) -X ${REPO}/pkg/version.Arch=$(GOARCH)" \
+		-ldflags "${LD_FLAGS} -X ${REPO}/internal/version.OS=$(GOOS) -X ${REPO}/internal/version.Arch=$(GOARCH)" \
 		-o ${BUILD_DIR}/$(BINARY_NAME)-$(GOOS)-$(GOARCH) ./cmd/app
 
 .PHONY: build-windows
 build-windows:
 	CGO_ENABLED=$(CGO_ENABLED) GOOS=$(GOOS) GOARCH=$(GOARCH) $(GOBUILD) -v \
-		-ldflags "${LD_FLAGS} -X ${REPO}/pkg/version.OS=$(GOOS) -X ${REPO}/pkg/version.Arch=$(GOARCH)" \
+		-ldflags "${LD_FLAGS} -X ${REPO}/internal/version.OS=$(GOOS) -X ${REPO}/internal/version.Arch=$(GOARCH)" \
 		-o ${BUILD_DIR}/$(BINARY_NAME)-$(GOOS)-$(GOARCH).exe ./cmd/app
 
 install: install-go-modules

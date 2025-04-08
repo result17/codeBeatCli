@@ -7,10 +7,9 @@
             "request": "launch",
             "mode": "debug",
             "program": "${workspaceFolder}/cmd/app",
-            "args": ["-v"],
+            "args": ["-v", "--dlog"],
             "env": {},
-            "showLog": true,
-            "buildFlags": "-v"
+            "showLog": true
         },
         {
             "name": "Debug without args",
