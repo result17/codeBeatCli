@@ -1,4 +1,4 @@
-package pkg
+package cmd
 
 import (
 	"bytes"
@@ -30,7 +30,6 @@ func RunE(cmd *cobra.Command, v *viper.Viper) error {
 
 	if v.GetBool("version") {
 		logger.Debugln("command: version")
-		// TODO run command
 		return runCmd(ctx, v, version.RunVersion)
 	}
 	return exitcode.Err{Code: exitcode.ErrGeneric}
