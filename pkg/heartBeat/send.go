@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/matishsiao/goInfo"
+	"github.com/result17/codeBeatCli/internal/heartbeat"
 	"github.com/result17/codeBeatCli/internal/version"
 	"github.com/result17/codeBeatCli/pkg/log"
 	"github.com/result17/codeBeatCli/pkg/params"
@@ -73,4 +74,11 @@ func UserAgent(ctx context.Context, plugin string) string {
 		}
 	}()
 	return userAgent
+}
+
+func buildHeartbeats(ctx context.Context, params params.Heartbeat) {
+	heartbeats := []heartbeat.Heartbeat{}
+	UserAgent := UserAgent(ctx, params.Plugin)
+
+	heartbeats = append(heartbeats, *heartbeat.New())
 }
