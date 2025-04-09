@@ -38,10 +38,24 @@ func NewCMD() *cobra.Command {
 
 func setFlags(cmd *cobra.Command, v *viper.Viper) {
 	flags := cmd.Flags()
-
+	flags.String("alternate-project", "", "Alternate project name.(Optional)")
+	flags.String("config", "", "Plugin config file.(Optional)")
 	flags.BoolP("version", "v", false, "Print CodeBeatCli version, and exit.")
-	flags.Bool("dlog", false, "set debugger logger level")
-
+	flags.Bool("dlog", false, "Set debugger logger level")
+	flags.Int("cursorpos", 0, "Cursor position in the current file for the heartbeat.(Optional)")
+	flags.Int(
+		"line-in-file",
+		0,
+		"The total line count of file for the heartbeat.",
+	)
+	flags.String(
+		"entity",
+		"",
+		"Absolute path to file for the heartbeat.",
+	)
+	flags.String("log-file", "", "Plugin log file absolute path.(Optional)")
+	flags.String("project-folder", "", "Absolute path to project folder.(Optional)")
+	flags.String("log-filer", "", "Absolute path to plugin log file.(Optional)")
 	err := v.BindPFlags(flags)
 	if err != nil {
 		log.Fatalf("failed to bind cobra flags to viper: %s", err)

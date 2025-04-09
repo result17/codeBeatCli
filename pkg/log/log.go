@@ -67,6 +67,10 @@ func (l *Logger) Errorf(format string, args ...any) {
 	l.entry.Log(zapcore.ErrorLevel, fmt.Sprintf(format, args...))
 }
 
+func (l *Logger) Warnf(format string, args ...any) {
+	l.entry.Log(zapcore.WarnLevel, fmt.Sprintf(format, args...))
+}
+
 func (l *Logger) Output() io.Writer {
 	return l.output
 }

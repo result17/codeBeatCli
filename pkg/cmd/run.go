@@ -32,7 +32,7 @@ func RunE(cmd *cobra.Command, v *viper.Viper) error {
 		logger.Debugln("command: version")
 		return runCmd(ctx, v, version.RunVersion)
 	}
-
+	_ = cmd.Help()
 	return exitcode.Err{Code: exitcode.ErrGeneric}
 }
 
