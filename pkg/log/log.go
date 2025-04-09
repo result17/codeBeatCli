@@ -93,3 +93,7 @@ func (l *Logger) SetAtomicLevel(level zapcore.Level) (restore func()) {
 	}
 	return
 }
+
+func (l *Logger) AddField(key string, val any) {
+	l.entry.With(zap.Any(key, val))
+}

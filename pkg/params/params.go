@@ -3,6 +3,7 @@ package params
 import (
 	"context"
 	"errors"
+	"time"
 
 	"github.com/result17/codeBeatCli/internal/vipertools"
 	"github.com/spf13/viper"
@@ -19,6 +20,7 @@ type (
 		ProjectFolder    string
 		Config           *string
 		LogFile          *string
+		Time             int64
 	}
 )
 
@@ -51,6 +53,15 @@ func LoadHeartbeatParams(ctx context.Context, v *viper.Viper) (Heartbeat, error)
 	plugin := vipertools.GetString(v, "plugin")
 	alternateProject := vipertools.GetString(v, "alternate-project")
 	projectFloader := vipertools.GetString(v, "project-floader")
+
+	// default now
+	timeVal := time.Now().Unix()
+	if v.IsSet("time") {
+		if secs := v.GetInt64("time"); secs > 0 {
+			timeVal = secs
+		}
+	}
+
 	return Heartbeat{
 		Entity:           entity,
 		Plugin:           plugin,
@@ -59,5 +70,6 @@ func LoadHeartbeatParams(ctx context.Context, v *viper.Viper) (Heartbeat, error)
 		LineInFile:       lineInFile,
 		AlternateProject: alternateProject,
 		ProjectFolder:    projectFloader,
+		Time:             timeVal,
 	}, nil
 }
