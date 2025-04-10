@@ -13,6 +13,7 @@ type (
 	Heartbeat struct {
 		Entity           string
 		Plugin           string
+		Language         *string
 		LineNumber       *int
 		CursorPos        *int
 		LineInFile       *int
@@ -54,6 +55,11 @@ func LoadHeartbeatParams(ctx context.Context, v *viper.Viper) (Heartbeat, error)
 	alternateProject := vipertools.GetString(v, "alternate-project")
 	projectFloader := vipertools.GetString(v, "project-floader")
 
+	var language *string
+	if l := vipertools.GetString(v, "language"); l != "" {
+		language = &l
+	}
+
 	// default now
 	timeVal := time.Now().Unix()
 	if v.IsSet("time") {
@@ -71,5 +77,6 @@ func LoadHeartbeatParams(ctx context.Context, v *viper.Viper) (Heartbeat, error)
 		AlternateProject: alternateProject,
 		ProjectFolder:    projectFloader,
 		Time:             timeVal,
+		Language:         language,
 	}, nil
 }

@@ -23,6 +23,7 @@ func SendHeartbeats(ctx context.Context, v *viper.Viper, path string) error {
 	logger := log.Extract(ctx)
 	setLogFields(logger, heartbeat)
 	logger.Debugf("params: %s", heartbeat)
+	opts := initHandleOptions(heartbeat)
 }
 
 func setLogFields(logger *log.Logger, params params.Heartbeat) {
@@ -76,9 +77,26 @@ func UserAgent(ctx context.Context, plugin string) string {
 	return userAgent
 }
 
-func buildHeartbeats(ctx context.Context, params params.Heartbeat) {
+func buildHeartbeats(ctx context.Context, params params.Heartbeat) []heartbeat.Heartbeat {
 	heartbeats := []heartbeat.Heartbeat{}
-	UserAgent := UserAgent(ctx, params.Plugin)
+	userAgent := UserAgent(ctx, params.Plugin)
 
-	heartbeats = append(heartbeats, *heartbeat.New())
+	heartbeats = append(heartbeats, *heartbeat.New(
+		params.Entity,
+		userAgent,
+		params.Time,
+		params.CursorPos,
+		params.Language,
+		params.LineNumber,
+		params.LineInFile,
+		&params.AlternateProject,
+		&params.ProjectFolder,
+	))
+	return heartbeats
+}
+
+func initHandleOptions(params params.Heartbeat) []heartbeat.HandleOption {
+	return []heartbeat.HandleOption{
+		heartbeat.WithFormatting(),
+	}
 }
