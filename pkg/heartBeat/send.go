@@ -24,6 +24,9 @@ func SendHeartbeats(ctx context.Context, v *viper.Viper, path string) error {
 	setLogFields(logger, heartbeat)
 	logger.Debugf("params: %s", heartbeat)
 	opts := initHandleOptions(heartbeat)
+	// TODO RateLimit
+	// TODO backoff handler
+	// TODO APIClient
 }
 
 func setLogFields(logger *log.Logger, params params.Heartbeat) {

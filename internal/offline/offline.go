@@ -71,7 +71,6 @@ func WithQueue(fp string) heartbeat.HandleOption {
 
 				return nil, nil
 			}
-
 			results, err := next(ctx, hs)
 			if err != nil {
 				logger.Debugf("pushing %d heartbeat(s) to queue after error: %s", len(hs), err)

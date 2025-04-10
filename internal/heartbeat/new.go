@@ -11,11 +11,26 @@ type Result struct {
 	Heartbeat Heartbeat
 }
 
+type Sender interface {
+	SendHeartbeats(context.Context, []Heartbeat) ([]Result, error)
+}
+
 // Handle does processing of heartbeats.
 type Handle func(context.Context, []Heartbeat) ([]Result, error)
 
 // HandleOption is a function, which allows chaining multiple Handles.
 type HandleOption func(next Handle) Handle
+
+func NewHandle(
+	sender Sender, opts ...HandleOption) Handle {
+	return func(ctx context.Context, hs []Heartbeat) ([]Result, error) {
+		var handle Handle = sender.SendHeartbeats
+		for i := len(opts) - 1; i >= 0; i-- {
+			handle = opts[i](handle)
+		}
+		return handle(ctx, hs)
+	}
+}
 
 type Heartbeat struct {
 	CursorPosition *int    `json:"cursorpos,omitempty"`
