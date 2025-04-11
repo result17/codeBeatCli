@@ -13,6 +13,7 @@ import (
 
 	"github.com/result17/codeBeatCli/internal/version"
 	"github.com/result17/codeBeatCli/pkg/exitcode"
+	heartbeat "github.com/result17/codeBeatCli/pkg/heartBeat"
 	"github.com/result17/codeBeatCli/pkg/log"
 )
 
@@ -28,10 +29,18 @@ func RunE(cmd *cobra.Command, v *viper.Viper) error {
 		stdlog.Fatalf("failde to setup logging: %s", err)
 	}
 	ctx = log.ToContxt(ctx, logger)
+
 	if v.GetBool("version") {
 		logger.Debugln("command: version")
 		return runCmd(ctx, v, version.RunVersion)
 	}
+
+	if entity := v.GetString("entity"); entity != "" {
+		logger.Debugln("Command: heartbeat")
+		_, err := heartbeat.Run(ctx, v)
+		return err
+	}
+
 	_ = cmd.Help()
 	return exitcode.Err{Code: exitcode.ErrGeneric}
 }

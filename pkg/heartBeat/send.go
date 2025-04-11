@@ -9,24 +9,38 @@ import (
 	"github.com/matishsiao/goInfo"
 	"github.com/result17/codeBeatCli/internal/heartbeat"
 	"github.com/result17/codeBeatCli/internal/version"
+	apiCmd "github.com/result17/codeBeatCli/pkg/api"
 	"github.com/result17/codeBeatCli/pkg/log"
 	"github.com/result17/codeBeatCli/pkg/params"
 	"github.com/spf13/viper"
 )
 
 func SendHeartbeats(ctx context.Context, v *viper.Viper, path string) error {
-	heartbeat, err := params.LoadHeartbeatParams(ctx, v)
+	h, err := params.LoadHeartbeatParams(ctx, v)
 	if err != nil {
 		return fmt.Errorf("failed to load heartbeat parameters: %w", err)
 	}
 
 	logger := log.Extract(ctx)
-	setLogFields(logger, heartbeat)
-	logger.Debugf("params: %s", heartbeat)
-	opts := initHandleOptions(heartbeat)
+	setLogFields(logger, h)
+	logger.Debugf("params: %s", h)
+	opts := initHandleOptions(h)
+	heartbeats := buildHeartbeats(ctx, h)
 	// TODO RateLimit
 	// TODO backoff handler
-	// TODO APIClient
+
+	apiClient, err := apiCmd.NewClient(ctx)
+
+	handle := heartbeat.NewHandle(apiClient, opts...)
+	results, err := handle(ctx, heartbeats)
+
+	for _, result := range results {
+		if len(result.Errors) > 0 {
+			logger.Warnln(strings.Join(result.Errors, " "))
+		}
+	}
+
+	return nil
 }
 
 func setLogFields(logger *log.Logger, params params.Heartbeat) {
