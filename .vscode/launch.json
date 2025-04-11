@@ -12,11 +12,32 @@
             "showLog": true
         },
         {
-            "name": "Debug without args",
+            "name": "Debug with heartbeat args",
             "type": "go",
             "request": "launch",
             "mode": "debug",
             "program": "${workspaceFolder}/cmd/app",
+            "args": [
+                "--dlog",
+                "--entity",
+                "e:\\code\\wakatime-cli\\pkg\\offline\\offline.go",
+                "--plugin",
+                "\"vscode/1.99.2 vscode-wakatime/25.0.0\"",
+                "--lineno",
+                "87",
+                "--cursorpos",
+                "4",
+                "--lines-in-file",
+                "573",
+                "--alternate-project",
+                "wakatime-cli",
+                "--project-folder",
+                "e:\\code\\wakatime-cli",
+                "--config",
+                "C:\\Users\\result17\\.wakatime.cfg",
+                "--log-file",
+                "C:\\Users\\result17\\.wakatime\\wakatime.log",
+              ],
             "env": {},
             "showLog": true
         }
