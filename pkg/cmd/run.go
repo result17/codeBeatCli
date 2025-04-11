@@ -12,8 +12,8 @@ import (
 	"go.uber.org/zap/zapcore"
 
 	"github.com/result17/codeBeatCli/internal/version"
+	heartbeat "github.com/result17/codeBeatCli/pkg/entity"
 	"github.com/result17/codeBeatCli/pkg/exitcode"
-	heartbeat "github.com/result17/codeBeatCli/pkg/heartBeat"
 	"github.com/result17/codeBeatCli/pkg/log"
 )
 
