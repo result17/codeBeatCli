@@ -43,8 +43,9 @@ func setFlags(cmd *cobra.Command, v *viper.Viper) {
 	flags.BoolP("version", "v", false, "Print CodeBeatCli version, and exit.")
 	flags.Bool("dlog", false, "Set debugger logger level")
 	flags.Int("cursorpos", 0, "Cursor position in the current file for the heartbeat.(Optional)")
+	flags.Int("lineno", 0, "Current line number int the file.")
 	flags.Int(
-		"line-in-file",
+		"lines-in-file",
 		0,
 		"The total line count of file for the heartbeat.",
 	)
