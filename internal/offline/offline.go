@@ -93,6 +93,22 @@ func WithQueue(fp string) heartbeat.HandleOption {
 	}
 }
 
+func SaveHeartbeat(fp string) heartbeat.HandleOption {
+	return func(next heartbeat.Handle) heartbeat.Handle {
+		return func(ctx context.Context, hs []heartbeat.Heartbeat) ([]heartbeat.Result, error) {
+			requeueErr := pushHeartbeatsWithRetry(ctx, fp, hs)
+			if requeueErr != nil {
+				return nil, fmt.Errorf(
+					"saving heartbeat locally failed to push heartbeats to queue: %s",
+					requeueErr,
+				)
+			}
+			results, err := next(ctx, hs)
+			return results, err
+		}
+	}
+}
+
 func pushHeartbeatsWithRetry(ctx context.Context, fp string, hs []heartbeat.Heartbeat) error {
 	var (
 		count int

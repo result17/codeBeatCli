@@ -18,6 +18,7 @@
             "mode": "debug",
             "program": "${workspaceFolder}/cmd/app",
             "args": [
+                "--local-save",
                 "--dlog",
                 "--entity",
                 "e:\\code\\wakatime-cli\\pkg\\offline\\offline.go",

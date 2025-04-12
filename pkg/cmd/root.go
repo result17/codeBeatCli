@@ -41,7 +41,8 @@ func setFlags(cmd *cobra.Command, v *viper.Viper) {
 	flags.String("alternate-project", "", "Alternate project name.(Optional)")
 	flags.String("config", "", "Plugin config file.(Optional)")
 	flags.BoolP("version", "v", false, "Print CodeBeatCli version, and exit.")
-	flags.Bool("dlog", false, "Set debugger logger level")
+	flags.Bool("dlog", false, "Set debugger logger level.")
+	flags.Bool("local-save", false, "Save hearbeat record in local db buck.(Optional)")
 	flags.Int("cursorpos", 0, "Cursor position in the current file for the heartbeat.(Optional)")
 	flags.Int("lineno", 0, "Current line number int the file.")
 	flags.Int(

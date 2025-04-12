@@ -8,6 +8,7 @@ import (
 
 	"github.com/matishsiao/goInfo"
 	"github.com/result17/codeBeatCli/internal/heartbeat"
+	"github.com/result17/codeBeatCli/internal/offline"
 	"github.com/result17/codeBeatCli/internal/version"
 	apiCmd "github.com/result17/codeBeatCli/pkg/api"
 	"github.com/result17/codeBeatCli/pkg/log"
@@ -24,7 +25,11 @@ func SendHeartbeats(ctx context.Context, v *viper.Viper, path string) error {
 	logger := log.Extract(ctx)
 	setLogFields(logger, h)
 	logger.Debugf("params: %s", h)
+
 	opts := initHandleOptions(h)
+	if isSave := v.GetBool("local-save"); isSave {
+		opts = append(opts, offline.SaveHeartbeat(path))
+	}
 	heartbeats := buildHeartbeats(ctx, h)
 	// TODO RateLimit
 	// TODO backoff handler
@@ -113,7 +118,8 @@ func buildHeartbeats(ctx context.Context, params params.Heartbeat) []heartbeat.H
 }
 
 func initHandleOptions(params params.Heartbeat) []heartbeat.HandleOption {
-	return []heartbeat.HandleOption{
+	opts := []heartbeat.HandleOption{
 		heartbeat.WithFormatting(),
 	}
+	return opts
 }

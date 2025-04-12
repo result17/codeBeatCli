@@ -1,7 +1,7 @@
 .DEFAULT_GOAL := build-windows
 
 # globals
-BINARY_NAME?=codeBeatCli
+BINARY_NAME?=codebeatcli
 BUILD_DIR?="./build"
 CGO_ENABLED?=0
 COMMIT?=$(shell git rev-parse --short HEAD)
