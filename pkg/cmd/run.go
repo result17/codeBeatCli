@@ -15,6 +15,7 @@ import (
 	heartbeat "github.com/result17/codeBeatCli/pkg/entity"
 	"github.com/result17/codeBeatCli/pkg/exitcode"
 	"github.com/result17/codeBeatCli/pkg/log"
+	"gopkg.in/natefinch/lumberjack.v2"
 )
 
 // cmdFn represents a command function
@@ -45,9 +46,14 @@ func RunE(cmd *cobra.Command, v *viper.Viper) error {
 	return exitcode.Err{Code: exitcode.ErrGeneric}
 }
 
-// TODO setup logger output file path
 func SetupLogging(ctx context.Context, v *viper.Viper) (*log.Logger, error) {
 	var destOutput io.Writer = os.Stdout
+
+	destOutput = &lumberjack.Logger{
+		Filename:   log.File,
+		MaxSize:    log.MaxLogFileSize,
+		MaxBackups: log.MaxNumberOfBackups,
+	}
 	l := log.New(destOutput)
 	if v.GetBool("dlog") {
 		l.SetAtomicLevel(zapcore.DebugLevel)

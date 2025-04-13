@@ -14,7 +14,6 @@ var ctxSignalKey = &ctxSignal{}
 func Extract(ctx context.Context) *Logger {
 	l, ok := ctx.Value(ctxSignalKey).(*Logger)
 	if !ok || l == nil {
-		// TODO set logger to context
 		return New(os.Stdout)
 	}
 	return l

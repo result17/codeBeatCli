@@ -10,6 +10,12 @@ import (
 	"github.com/result17/codeBeatCli/internal/version"
 )
 
+const (
+	File               = "codebeat.log"
+	MaxLogFileSize     = 25
+	MaxNumberOfBackups = 3
+)
+
 type Logger struct {
 	entry              *zap.Logger
 	atomicLever        zap.AtomicLevel

@@ -18,7 +18,7 @@ import (
 
 const (
 	// dbFilename is the default bolt db filename.
-	dbFilename = "offline_heartbeats.bdb"
+	dbFilename = "offline_heartbeats_codebeat.bdb"
 	// maxRequeueAttempts defines the maximum number of attempts to requeue heartbeats,
 	// which could not successfully be sent to the WakaTime API.
 	maxRequeueAttempts = 3
@@ -30,7 +30,8 @@ func openDB(ctx context.Context, fp string) (db *bolt.DB, _ func(), err error) {
 			err = errors.New("OpenDB panicked")
 		}
 	}()
-	// windows not work
+	logger := log.Extract(ctx)
+	logger.Debugf("Open db file: %s", fp)
 	db, err = bolt.Open(fp, 0644, &bolt.Options{Timeout: 30 * time.Second})
 	if err != nil {
 		return nil, nil, fmt.Errorf("failed to open db file: %s", err)
@@ -54,10 +55,11 @@ func openDB(ctx context.Context, fp string) (db *bolt.DB, _ func(), err error) {
 
 func QueueFilepath(ctx context.Context, v *viper.Viper) (string, error) {
 	homedir, err := workspace.CodeBeatHomeDir()
+
 	if err != nil {
 		return dbFilename, fmt.Errorf("failed getting resource directory, defaulting to current directory: %s", err)
 	}
-	return filepath.Join(homedir, dbFilename), nil
+	return filepath.Join(homedir, ".codebeat", dbFilename), nil
 }
 
 func WithQueue(fp string) heartbeat.HandleOption {
