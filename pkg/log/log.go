@@ -3,11 +3,13 @@ package log
 import (
 	"fmt"
 	"io"
+	"path/filepath"
 
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 
 	"github.com/result17/codeBeatCli/internal/version"
+	"github.com/result17/codeBeatCli/internal/workspace"
 )
 
 const (
@@ -106,4 +108,13 @@ func (l *Logger) SetAtomicLevel(level zapcore.Level) (restore func()) {
 
 func (l *Logger) AddField(key string, val any) {
 	l.entry.With(zap.Any(key, val))
+}
+
+func LogFilepath() (string, error) {
+	homedir, err := workspace.CodeBeatHomeDir()
+
+	if err != nil {
+		return File, fmt.Errorf("failed getting resource directory, defaulting to current directory: %s", err)
+	}
+	return filepath.Join(homedir, ".codebeat", File), nil
 }

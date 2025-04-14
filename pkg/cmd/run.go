@@ -3,6 +3,7 @@ package cmd
 import (
 	"bytes"
 	"context"
+	"fmt"
 	"io"
 	stdlog "log"
 	"os"
@@ -49,8 +50,14 @@ func RunE(cmd *cobra.Command, v *viper.Viper) error {
 func SetupLogging(ctx context.Context, v *viper.Viper) (*log.Logger, error) {
 	var destOutput io.Writer = os.Stdout
 
+	logPath, err := log.LogFilepath()
+
+	if err != nil {
+		return nil, fmt.Errorf("Fail to output log file %s", logPath)
+	}
+
 	destOutput = &lumberjack.Logger{
-		Filename:   log.File,
+		Filename:   logPath,
 		MaxSize:    log.MaxLogFileSize,
 		MaxBackups: log.MaxNumberOfBackups,
 	}

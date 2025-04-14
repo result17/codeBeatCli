@@ -38,6 +38,12 @@ func NewCMD() *cobra.Command {
 
 func setFlags(cmd *cobra.Command, v *viper.Viper) {
 	flags := cmd.Flags()
+	flags.String(
+		"entity",
+		"",
+		"Absolute path to file for the heartbeat.",
+	)
+	flags.String("language", "", "The language or file format of entity.")
 	flags.String("alternate-project", "", "Alternate project name.(Optional)")
 	flags.String("config", "", "Plugin config file.(Optional)")
 	flags.BoolP("version", "v", false, "Print CodeBeatCli version, and exit.")
@@ -49,11 +55,6 @@ func setFlags(cmd *cobra.Command, v *viper.Viper) {
 		"lines-in-file",
 		0,
 		"The total line count of file for the heartbeat.",
-	)
-	flags.String(
-		"entity",
-		"",
-		"Absolute path to file for the heartbeat.",
 	)
 	flags.String("log-file", "", "Plugin log file absolute path.(Optional)")
 	flags.String("project-folder", "", "Absolute path to project folder.(Optional)")
