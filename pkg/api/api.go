@@ -11,14 +11,14 @@ import (
 	tz "github.com/gandarez/go-olson-timezone"
 )
 
-func NewClient(ctx context.Context) (*api.Client, error) {
-	return newClient(ctx)
+func NewClient(ctx context.Context, url string) (*api.Client, error) {
+	return newClient(ctx, url)
 }
 
-func newClient(ctx context.Context) (*api.Client, error) {
+func newClient(ctx context.Context, url string) (*api.Client, error) {
 	logger := log.Extract(ctx)
 	logger.Debugf("Creating client, the baseurl is %s", api.BaseURL)
-	return api.NewClient(api.BaseURL), nil
+	return api.NewClient(url), nil
 }
 
 func timezone() (name string, err error) {

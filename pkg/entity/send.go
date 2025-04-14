@@ -17,14 +17,17 @@ import (
 )
 
 func SendHeartbeats(ctx context.Context, v *viper.Viper, path string) error {
-	h, err := params.LoadHeartbeatParams(ctx, v)
+	params, err := params.LoadParams(ctx, v)
+
+	h := params.Heartbeat
+	apiParams := params.API
+
 	if err != nil {
-		return fmt.Errorf("failed to load heartbeat parameters: %w", err)
+		return fmt.Errorf("Failed to load heartbeat parameters or api parameters: %w", err)
 	}
 
 	logger := log.Extract(ctx)
 	setLogFields(logger, h)
-	logger.Debugf("params: %s", h)
 
 	opts := initHandleOptions(h)
 	if isSave := v.GetBool("local-save"); isSave {
@@ -34,10 +37,18 @@ func SendHeartbeats(ctx context.Context, v *viper.Viper, path string) error {
 	// TODO RateLimit
 	// TODO backoff handler
 
-	apiClient, err := apiCmd.NewClient(ctx)
+	apiClient, err := apiCmd.NewClient(ctx, apiParams.BaseUrl)
+
+	if err != nil {
+		return fmt.Errorf("Failed to create apiClient: %w", err)
+	}
 
 	handle := heartbeat.NewHandle(apiClient, opts...)
 	results, err := handle(ctx, heartbeats)
+
+	if err != nil {
+		return fmt.Errorf("Failed to handler heartbeat results: %w", err)
+	}
 
 	for _, result := range results {
 		if len(result.Errors) > 0 {

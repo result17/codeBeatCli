@@ -5,11 +5,21 @@ import (
 	"errors"
 	"time"
 
+	"github.com/result17/codeBeatCli/internal/api"
 	"github.com/result17/codeBeatCli/internal/vipertools"
 	"github.com/spf13/viper"
 )
 
 type (
+	Params struct {
+		API       API
+		Heartbeat Heartbeat
+	}
+
+	API struct {
+		BaseUrl string
+	}
+
 	Heartbeat struct {
 		Entity           string
 		Plugin           string
@@ -30,7 +40,32 @@ func PointerTo[t bool | int | string](v t) *t {
 	return &v
 }
 
-func LoadHeartbeatParams(ctx context.Context, v *viper.Viper) (Heartbeat, error) {
+func LoadParams(ctx context.Context, v *viper.Viper) (Params, error) {
+	apiParams, err := loadApiParams(ctx, v)
+	if err != nil {
+		return Params{}, err
+	}
+	heartbeatParams, err := loadHeartbeatParams(ctx, v)
+	if err != nil {
+		return Params{}, err
+	}
+	return Params{
+		API:       apiParams,
+		Heartbeat: heartbeatParams,
+	}, nil
+}
+
+func loadApiParams(ctx context.Context, v *viper.Viper) (API, error) {
+	var baseUrl string
+	if baseUrl = vipertools.GetString(v, "api-url"); baseUrl == "" {
+		baseUrl = api.BaseURL
+	}
+	return API{
+		BaseUrl: baseUrl,
+	}, nil
+}
+
+func loadHeartbeatParams(ctx context.Context, v *viper.Viper) (Heartbeat, error) {
 	var cursorPos *int
 	if v.IsSet("cursorpos") {
 		pos := v.GetInt("cursorpos")
