@@ -41,11 +41,11 @@ type Heartbeat struct {
 	LinesInFile    *int    `json:"lines,omitempty"`
 	Project        *string `json:"project,omitempty"`
 	ProjectPath    *string `json:"projectPath,omitempty"`
-	Time           int64   `json:"time"`
+	Time           float64 `json:"time"`
 	UserAgent      string  `json:"user_agent"`
 }
 
-func New(entity, userAgent string, time int64, cursorPos *int, lang *string, lineNum *int, linesInFile *int, project *string, projectPath *string) *Heartbeat {
+func New(entity, userAgent string, time float64, cursorPos *int, lang *string, lineNum *int, linesInFile *int, project *string, projectPath *string) *Heartbeat {
 	hb := &Heartbeat{
 		Entity:         entity,
 		Time:           time,

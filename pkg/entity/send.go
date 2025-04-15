@@ -63,8 +63,8 @@ func setLogFields(logger *log.Logger, params params.Heartbeat) {
 	logger.AddField("entity", params.Entity)
 	logger.AddField("time", params.Time)
 
-	if params.LineNumber != nil {
-		logger.AddField("lineno", params.LineNumber)
+	if params.LinesNumber != nil {
+		logger.AddField("lineno", params.LinesNumber)
 	}
 }
 
@@ -120,10 +120,10 @@ func buildHeartbeats(ctx context.Context, params params.Heartbeat) []heartbeat.H
 		params.Time,
 		params.CursorPos,
 		params.Language,
-		params.LineNumber,
+		params.LinesNumber,
 		params.LineInFile,
-		&params.AlternateProject,
-		&params.ProjectFolder,
+		params.AlternateProject,
+		params.ProjectFolder,
 	))
 	return heartbeats
 }

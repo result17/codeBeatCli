@@ -65,7 +65,7 @@ func (c Client) sendHeartbeats(ctx context.Context, url string, hs []heartbeat.H
 
 	defer res.Body.Close()
 
-	body, err := io.ReadAll(req.Body)
+	body, err := io.ReadAll(res.Body)
 
 	if err != nil {
 		return nil, fmt.Errorf("Failed reading response body from %q: %s", url, err)

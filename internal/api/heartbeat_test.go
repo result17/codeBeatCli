@@ -10,6 +10,7 @@ import (
 	"testing"
 	"time"
 
+	hearbeatAPI "github.com/result17/codeBeatCli/internal/api"
 	hearbeatPkg "github.com/result17/codeBeatCli/pkg/entity"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
@@ -30,8 +31,9 @@ func TestSendHeartbeats(t *testing.T) {
 	v.Set("cursorpos", 125)
 	v.Set("entity", "testdata/main.go")
 	v.Set("language", "Go")
-	v.Set("project", "test-cli")
+	v.Set("alternate-project", "test-cli")
 	v.Set("lineno", 19)
+	v.Set("lines-in-file", 38)
 	v.Set("plugin", plugin)
 	v.Set("time", 1585598059.1)
 	v.Set("timeout", 5)
@@ -40,7 +42,7 @@ func TestSendHeartbeats(t *testing.T) {
 	require.NoError(t, err)
 	defer offlineQueueFile.Close()
 
-	router.HandleFunc("/cb/heartbeats", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc(hearbeatAPI.CollectHeartbeatRouter, func(w http.ResponseWriter, r *http.Request) {
 		numCalls++
 		assert.Equal(t, []string{"application/json"}, r.Header["Accept"])
 		assert.Equal(t, []string{"application/json"}, r.Header["Content-Type"])

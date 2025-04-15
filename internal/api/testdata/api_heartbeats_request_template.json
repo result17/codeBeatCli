@@ -4,8 +4,8 @@
         "entity": "%s",
         "language": "Go",
         "lineno": 19,
-        "lines": 3,
-        "project": "text-cli",
+        "lines": 38,
+        "project": "test-cli",
         "time": 1585598059.1,
         "user_agent": "%s"
     }

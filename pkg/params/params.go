@@ -24,14 +24,14 @@ type (
 		Entity           string
 		Plugin           string
 		Language         *string
-		LineNumber       *int
+		LinesNumber      *int
 		CursorPos        *int
 		LineInFile       *int
-		AlternateProject string
-		ProjectFolder    string
+		AlternateProject *string
+		ProjectFolder    *string
 		Config           *string
 		LogFile          *string
-		Time             int64
+		Time             float64
 	}
 )
 
@@ -76,19 +76,27 @@ func loadHeartbeatParams(ctx context.Context, v *viper.Viper) (Heartbeat, error)
 		return Heartbeat{}, errors.New("fail to receive entity")
 	}
 
-	var lineNumber *int
+	var linesNumber *int
 	if v.IsSet("lineno") {
-		lineNumber = PointerTo(v.GetInt("lineno"))
+		linesNumber = PointerTo(v.GetInt("lineno"))
 	}
 
 	var lineInFile *int
-	if v.IsSet("line-in-file") {
-		lineInFile = PointerTo(v.GetInt("line-in-file"))
+	if v.IsSet("lines-in-file") {
+		lineInFile = PointerTo(v.GetInt("lines-in-file"))
 	}
 
 	plugin := vipertools.GetString(v, "plugin")
-	alternateProject := vipertools.GetString(v, "alternate-project")
-	projectFloader := vipertools.GetString(v, "project-floader")
+
+	var alternateProject *string
+	if v.IsSet("alternate-project") {
+		alternateProject = PointerTo(vipertools.GetString(v, "alternate-project"))
+	}
+
+	var projectFloder *string
+	if v.IsSet("project-Floder") {
+		projectFloder = PointerTo(vipertools.GetString(v, "project-Floder"))
+	}
 
 	var language *string
 	if l := vipertools.GetString(v, "language"); l != "" {
@@ -96,9 +104,9 @@ func loadHeartbeatParams(ctx context.Context, v *viper.Viper) (Heartbeat, error)
 	}
 
 	// default now
-	timeVal := time.Now().Unix()
+	timeVal := float64(time.Now().Nanosecond()) / 1e9
 	if v.IsSet("time") {
-		if secs := v.GetInt64("time"); secs > 0 {
+		if secs := v.GetFloat64("time"); secs > 0 {
 			timeVal = secs
 		}
 	}
@@ -106,11 +114,11 @@ func loadHeartbeatParams(ctx context.Context, v *viper.Viper) (Heartbeat, error)
 	return Heartbeat{
 		Entity:           entity,
 		Plugin:           plugin,
-		LineNumber:       lineNumber,
+		LinesNumber:      linesNumber,
 		CursorPos:        cursorPos,
 		LineInFile:       lineInFile,
 		AlternateProject: alternateProject,
-		ProjectFolder:    projectFloader,
+		ProjectFolder:    projectFloder,
 		Time:             timeVal,
 		Language:         language,
 	}, nil
