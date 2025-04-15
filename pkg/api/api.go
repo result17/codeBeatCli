@@ -24,7 +24,7 @@ func newClient(ctx context.Context, url string) (*api.Client, error) {
 func timezone() (name string, err error) {
 	defer func() {
 		if r := recover(); r != nil {
-			err = fmt.Errorf("panicked: failed to get timezone: %v. Stack: %s", r, string(debug.Stack()))
+			err = fmt.Errorf("Panicked: failed to get timezone: %v. Stack: %s", r, string(debug.Stack()))
 		}
 	}()
 

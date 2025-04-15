@@ -2,16 +2,6 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Debug with -v",
-            "type": "go",
-            "request": "launch",
-            "mode": "debug",
-            "program": "${workspaceFolder}/cmd/app",
-            "args": ["-v", "--dlog"],
-            "env": {},
-            "showLog": true
-        },
-        {
             "name": "Debug with heartbeat args",
             "type": "go",
             "request": "launch",

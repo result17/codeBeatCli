@@ -28,7 +28,7 @@ func RunE(cmd *cobra.Command, v *viper.Viper) error {
 	log.Extract(ctx)
 	logger, err := SetupLogging(ctx, v)
 	if err != nil {
-		stdlog.Fatalf("failde to setup logging: %s", err)
+		stdlog.Fatalf("Failde to setup logging: %s", err)
 	}
 	ctx = log.ToContxt(ctx, logger)
 
@@ -80,13 +80,13 @@ func runCmd(ctx context.Context, v *viper.Viper, cmd cmdFn) (errorsponse error) 
 	exitCode, err := cmd(ctx, v)
 
 	if err != nil {
-		logger.Errorf("failed to run command: %s", err)
+		logger.Errorf("Failed to run command: %s", err)
 
 		resetLogs()
 	}
 
 	if exitCode != exitcode.Success {
-		logger.Debugf("command failed with exit code %d", exitCode)
+		logger.Debugf("Command failed with exit code %d", exitCode)
 		errorsponse = exitcode.Err{Code: exitCode}
 	}
 	return errorsponse

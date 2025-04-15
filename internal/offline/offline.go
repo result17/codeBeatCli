@@ -43,12 +43,12 @@ func openDB(ctx context.Context, fp string) (db *bolt.DB, _ func(), err error) {
 		// recover from panic when closing db
 		defer func() {
 			if r := recover(); r != nil {
-				logger.Warnf("panicked: failed to close db file: %v", r)
+				logger.Warnf("Panicked: failed to close db file: %v", r)
 			}
 		}()
 
 		if err := db.Close(); err != nil {
-			logger.Debugf("failed to close db file: %s", err)
+			logger.Debugf("Failed to close db file: %s", err)
 		}
 	}, err
 }
@@ -57,7 +57,7 @@ func QueueFilepath(ctx context.Context, v *viper.Viper) (string, error) {
 	homedir, err := workspace.CodeBeatHomeDir()
 
 	if err != nil {
-		return dbFilename, fmt.Errorf("failed getting resource directory, defaulting to current directory: %s", err)
+		return dbFilename, fmt.Errorf("Failed getting resource directory, defaulting to current directory: %s", err)
 	}
 	return filepath.Join(homedir, ".codebeat", dbFilename), nil
 }
@@ -66,21 +66,21 @@ func WithQueue(fp string) heartbeat.HandleOption {
 	return func(next heartbeat.Handle) heartbeat.Handle {
 		return func(ctx context.Context, hs []heartbeat.Heartbeat) ([]heartbeat.Result, error) {
 			logger := log.Extract(ctx)
-			logger.Debugf("execute offline queue with file %s", fp)
+			logger.Debugf("Execute offline queue with file %s", fp)
 
 			if len(hs) == 0 {
-				logger.Debugln("abort execution, as there are no heartbeats ready for sending")
+				logger.Debugln("Abort execution, as there are no heartbeats ready for sending")
 
 				return nil, nil
 			}
 			results, err := next(ctx, hs)
 			if err != nil {
-				logger.Debugf("pushing %d heartbeat(s) to queue after error: %s", len(hs), err)
+				logger.Debugf("Pushing %d heartbeat(s) to queue after error: %s", len(hs), err)
 
 				requeueErr := pushHeartbeatsWithRetry(ctx, fp, hs)
 				if requeueErr != nil {
 					return nil, fmt.Errorf(
-						"failed to push heartbeats to queue: %s",
+						"Failed to push heartbeats to queue: %s",
 						requeueErr,
 					)
 				}
@@ -88,7 +88,7 @@ func WithQueue(fp string) heartbeat.HandleOption {
 			}
 			err = handleResults(ctx, fp, results, hs)
 			if err != nil {
-				return nil, fmt.Errorf("failed to handle results: %s", err)
+				return nil, fmt.Errorf("Fail to handle results: %s", err)
 			}
 			return results, nil
 		}

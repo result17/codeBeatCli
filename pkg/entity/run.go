@@ -13,12 +13,13 @@ func Run(ctx context.Context, v *viper.Viper) (int, error) {
 	logger := log.Extract(ctx)
 	queueFilepath, err := offline.QueueFilepath(ctx, v)
 	if err != nil {
-		logger.Warnf("failed to load offline queue filepath: %s", err)
+		logger.Warnf("Fail to load offline queue filepath: %s", err)
 	}
 
 	err = SendHeartbeats(ctx, v, queueFilepath)
 	if err != nil {
-		logger.Debugln("fail to sent heartbeat(s)")
+		logger.Debugln("Fail to sent heartbeat(s)")
+		return exitcode.ErrAPI, nil
 	}
 
 	logger.Debugln("successfully sent heartbeat(s)")

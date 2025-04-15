@@ -45,7 +45,7 @@ func (c Client) sendHeartbeats(ctx context.Context, url string, hs []heartbeat.H
 		return nil, fmt.Errorf("Failed to json encode heartbeats: %s", err)
 	}
 
-	logger.Debugf("heartbeats: %s", string(data))
+	logger.Debugf("Heartbeats: %s", string(data))
 
 	req, err := http.NewRequest(http.MethodPost, url, bytes.NewBuffer(data))
 

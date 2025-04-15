@@ -23,7 +23,7 @@ func SendHeartbeats(ctx context.Context, v *viper.Viper, path string) error {
 	apiParams := params.API
 
 	if err != nil {
-		return fmt.Errorf("Failed to load heartbeat parameters or api parameters: %w", err)
+		return fmt.Errorf("Fail to load heartbeat parameters or api parameters: %w", err)
 	}
 
 	logger := log.Extract(ctx)
@@ -40,14 +40,14 @@ func SendHeartbeats(ctx context.Context, v *viper.Viper, path string) error {
 	apiClient, err := apiCmd.NewClient(ctx, apiParams.BaseUrl)
 
 	if err != nil {
-		return fmt.Errorf("Failed to create apiClient: %w", err)
+		return fmt.Errorf("Fail to create apiClient: %w", err)
 	}
 
 	handle := heartbeat.NewHandle(apiClient, opts...)
 	results, err := handle(ctx, heartbeats)
 
 	if err != nil {
-		return fmt.Errorf("Failed to handler heartbeat results: %w", err)
+		return fmt.Errorf("Fail to handler heartbeat results: %w", err)
 	}
 
 	for _, result := range results {
@@ -79,7 +79,7 @@ func UserAgent(ctx context.Context, plugin string) string {
 
 	info, err := goInfo.GetInfo()
 	if err != nil {
-		logger.Debugf("goInfo.GetInfo error: %s", err)
+		logger.Debugf("GoInfo.GetInfo error: %s", err)
 	}
 
 	userAgent := fmt.Sprintf(
