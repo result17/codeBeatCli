@@ -32,6 +32,7 @@ func NewHandle(
 	}
 }
 
+// TODO heartbeat ID
 type Heartbeat struct {
 	CursorPosition *int    `json:"cursorpos,omitempty"`
 	Entity         string  `json:"entity"`
