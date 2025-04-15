@@ -72,5 +72,10 @@ func (h Heartbeat) ID() string {
 		cursorPos = fmt.Sprint(*h.CursorPosition)
 	}
 
-	return fmt.Sprintf("%d-%s-%s", h.Time, cursorPos, project)
+	lang := "unkown"
+	if h.Language != nil {
+		lang = *h.Language
+	}
+
+	return fmt.Sprintf("%f-%s-%s-%s-%s", h.Time, lang, h.Entity, cursorPos, project)
 }
