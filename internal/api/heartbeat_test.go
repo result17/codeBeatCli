@@ -85,3 +85,30 @@ func TestSendHeartbeats(t *testing.T) {
 
 	assert.Eventually(t, func() bool { return numCalls == 1 }, time.Second, 50*time.Millisecond)
 }
+
+func TestSendHeartbeatsWithLocalServer(t *testing.T) {
+	var (
+		plugin = "codebeat/0.0.1"
+	)
+
+	v := viper.New()
+	v.Set("api-url", "http://127.0.0.1:3000")
+	v.Set("cursorpos", 125)
+	v.Set("entity", "testdata/main.go")
+	v.Set("language", "Go")
+	v.Set("alternate-project", "test-cli")
+	v.Set("lineno", 19)
+	v.Set("lines-in-file", 38)
+	v.Set("plugin", plugin)
+	v.Set("time", 1585598059.1)
+	v.Set("timeout", 5)
+
+	offlineQueueFile, err := os.CreateTemp(t.TempDir(), "")
+	require.NoError(t, err)
+	defer offlineQueueFile.Close()
+
+	err = hearbeatPkg.SendHeartbeats(t.Context(), v, offlineQueueFile.Name())
+	require.NoError(t, err)
+
+	// assert.Eventually(t, func() bool { return numCalls == 1 }, time.Second, 50*time.Millisecond)
+}

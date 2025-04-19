@@ -55,7 +55,6 @@ func SendHeartbeats(ctx context.Context, v *viper.Viper, path string) error {
 			logger.Warnln(strings.Join(result.Errors, " "))
 		}
 	}
-
 	return nil
 }
 

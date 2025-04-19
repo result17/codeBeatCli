@@ -15,7 +15,7 @@ import (
 )
 
 const (
-	CollectHeartbeatRouter = "/users/current/heartbeats/collect"
+	CollectHeartbeatRouter = "/api/heartbeat/list"
 )
 
 func (c Client) SendHeartbeats(ctx context.Context, hs []heartbeat.Heartbeat) ([]heartbeat.Result, error) {
@@ -37,6 +37,7 @@ func (c Client) SendHeartbeats(ctx context.Context, hs []heartbeat.Heartbeat) ([
 	return results, nil
 }
 
+// sendHeartbeats main logic
 func (c Client) sendHeartbeats(ctx context.Context, url string, hs []heartbeat.Heartbeat) ([]heartbeat.Result, error) {
 	logger := log.Extract(ctx)
 	data, err := json.Marshal(hs)
@@ -74,6 +75,8 @@ func (c Client) sendHeartbeats(ctx context.Context, url string, hs []heartbeat.H
 	case http.StatusAccepted, http.StatusCreated:
 	case http.StatusBadRequest:
 		return nil, fmt.Errorf("Bad request at %q", url)
+	case http.StatusInternalServerError:
+		return nil, fmt.Errorf("Server error at %q", url)
 	default:
 		return nil, fmt.Errorf("Invalid response status from %q. got: %d, want: %d/%d. body: %q",
 			url, res.StatusCode, http.StatusAccepted, http.StatusCreated, string(body))

@@ -32,7 +32,6 @@ func NewHandle(
 	}
 }
 
-// TODO heartbeat ID
 type Heartbeat struct {
 	CursorPosition *int    `json:"cursorpos,omitempty"`
 	Entity         string  `json:"entity"`
@@ -42,7 +41,7 @@ type Heartbeat struct {
 	Project        *string `json:"project,omitempty"`
 	ProjectPath    *string `json:"projectPath,omitempty"`
 	Time           float64 `json:"time"`
-	UserAgent      string  `json:"user_agent"`
+	UserAgent      string  `json:"userAgent"`
 }
 
 func New(entity, userAgent string, time float64, cursorPos *int, lang *string, lineNum *int, linesInFile *int, project *string, projectPath *string) *Heartbeat {
