@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	BaseURL            = ""
+	BaseURL            = "https://codebeat.dpdns.org"
 	DefaultTimeoutSecs = 60
 )
 

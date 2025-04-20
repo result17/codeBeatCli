@@ -104,7 +104,7 @@ func loadHeartbeatParams(ctx context.Context, v *viper.Viper) (Heartbeat, error)
 	}
 
 	// default now
-	timeVal := float64(time.Now().Nanosecond()) / 1e9
+	timeVal := float64(time.Now().UnixNano()) / 1e9
 	if v.IsSet("time") {
 		if secs := v.GetFloat64("time"); secs > 0 {
 			timeVal = secs

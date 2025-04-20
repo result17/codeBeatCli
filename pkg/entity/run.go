@@ -18,11 +18,11 @@ func Run(ctx context.Context, v *viper.Viper) (int, error) {
 
 	err = SendHeartbeats(ctx, v, queueFilepath)
 	if err != nil {
-		logger.Debugln("Fail to sent heartbeat(s)")
+		logger.Debugf("Fail to sent heartbeat(s): %s", err)
 		return exitcode.ErrAPI, nil
 	}
 
-	logger.Debugln("successfully sent heartbeat(s)")
+	logger.Debugln("Successfully sent heartbeat(s)")
 
 	return exitcode.Success, nil
 }
