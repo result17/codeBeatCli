@@ -94,8 +94,8 @@ func loadHeartbeatParams(ctx context.Context, v *viper.Viper) (Heartbeat, error)
 	}
 
 	var projectFloder *string
-	if v.IsSet("project-Floder") {
-		projectFloder = PointerTo(vipertools.GetString(v, "project-Floder"))
+	if v.IsSet("project-path") {
+		projectFloder = PointerTo(vipertools.GetString(v, "project-path"))
 	}
 
 	var language *string

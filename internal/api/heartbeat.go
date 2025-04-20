@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"strings"
 
 	"github.com/result17/codeBeatCli/internal/heartbeat"
 	"github.com/result17/codeBeatCli/pkg/log"
@@ -89,16 +88,13 @@ func (c Client) sendHeartbeats(ctx context.Context, url string, hs []heartbeat.H
 }
 
 func ParseHeartbeatResponses(ctx context.Context, data []byte) ([]heartbeat.Result, error) {
-	var responsesBody struct {
-		Responses [][]json.RawMessage `json:"responses"`
-	}
+	var responsesBody []json.RawMessage
 	err := json.Unmarshal(data, &responsesBody)
 	if err != nil {
 		return nil, fmt.Errorf("Failed to parse json response body: %s. body: %q", err, string(data))
 	}
-
 	var results []heartbeat.Result
-	for n, r := range responsesBody.Responses {
+	for n, r := range responsesBody {
 		result, err := parseHeartbeatResponse(ctx, r)
 		if err != nil {
 			return nil, fmt.Errorf("Failed parsing result #%d: %s. body: %q", n, err, string(data))
@@ -108,90 +104,22 @@ func ParseHeartbeatResponses(ctx context.Context, data []byte) ([]heartbeat.Resu
 	return results, nil
 }
 
-func parseHeartbeatResponse(ctx context.Context, data []json.RawMessage) (heartbeat.Result, error) {
+func parseHeartbeatResponse(ctx context.Context, data json.RawMessage) (heartbeat.Result, error) {
 	var result heartbeat.Result
 
 	type responseBody struct {
-		Data *heartbeat.Heartbeat `json:"data"`
+		Data   *heartbeat.Heartbeat `json:"data"`
+		Status int                  `json:"status"`
 	}
 
-	err := json.Unmarshal(data[1], &result.Status)
+	err := json.Unmarshal(data, &result)
 	if err != nil {
-		return heartbeat.Result{}, fmt.Errorf("failed to parse json status: %s", err)
+		return heartbeat.Result{}, fmt.Errorf("Failed to parse json status or heartbeat: %s", err)
 	}
 
 	if result.Status < http.StatusOK || result.Status > 299 {
-		resultErrors, err := parseHeartbeatResponseError(ctx, data[0])
-		if err != nil {
-			return heartbeat.Result{}, fmt.Errorf("failed to parse result errors: %s", err)
-		}
-
-		result.Errors = resultErrors
-
-		return heartbeat.Result{
-			Errors: result.Errors,
-			Status: result.Status,
-		}, nil
-	}
-
-	err = json.Unmarshal(data[0], &responseBody{Data: &result.Heartbeat})
-	if err != nil {
-		return heartbeat.Result{}, fmt.Errorf("failed to parse json heartbeat: %s", err)
+		return heartbeat.Result{}, fmt.Errorf("Incorrect status: %d", result.Status)
 	}
 
 	return result, nil
-
-}
-
-func parseHeartbeatResponseError(ctx context.Context, data json.RawMessage) ([]string, error) {
-	logger := log.Extract(ctx)
-	var errs []string
-	type responseBodyErr struct {
-		Error  *string         `json:"error"`
-		Errors *map[string]any `json:"errors"`
-	}
-
-	// 1. try "error" key
-	var resultError string
-
-	err := json.Unmarshal(data, &responseBodyErr{Error: &resultError})
-	if err != nil {
-		logger.Debugf("Failed to parse json heartbeat error or 'error' key note found: %s", err)
-	}
-
-	if resultError != "" {
-		errs = append(errs, resultError)
-		return errs, nil
-	}
-
-	// 2. try "errors" key
-	var resultErrors map[string]any
-
-	err = json.Unmarshal(data, &responseBodyErr{Errors: &resultErrors})
-	if err != nil {
-		logger.Debugf("Failed to parse json heartbeat error or 'error' key note found: %s", err)
-	}
-	if resultErrors == nil {
-		return nil, errors.New("failed to detect any errors despite invalid response status")
-	}
-
-	for field, messages := range resultErrors {
-		// skipping parsing dependencies errors as it won't happen because we are
-		// filtering in the cli.
-		if field == "dependencies" {
-			continue
-		}
-
-		m := make([]string, len(messages.([]any)))
-		for i, v := range messages.([]any) {
-			m[i] = fmt.Sprint(v)
-		}
-
-		errs = append(errs, fmt.Sprintf(
-			"%s: %s",
-			field,
-			strings.Join(m, " "),
-		))
-	}
-	return errs, nil
 }

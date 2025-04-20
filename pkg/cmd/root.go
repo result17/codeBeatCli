@@ -57,7 +57,7 @@ func setFlags(cmd *cobra.Command, v *viper.Viper) {
 		"The total line count of file for the heartbeat.",
 	)
 	flags.String("log-file", "", "Plugin log file absolute path.(Optional)")
-	flags.String("project-folder", "", "Absolute path to project folder.(Optional)")
+	flags.String("project-path", "", "Absolute path to project folder.(Optional)")
 	flags.String("log-filer", "", "Absolute path to plugin log file.(Optional)")
 	flags.Int64("time", 0, "Unix epoch timeStamp. Uses current time by default.")
 	flags.String("plugin", "", "Text editor plugin name and version")

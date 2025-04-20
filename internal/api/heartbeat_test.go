@@ -37,6 +37,7 @@ func TestSendHeartbeats(t *testing.T) {
 	v.Set("plugin", plugin)
 	v.Set("time", 1585598059.1)
 	v.Set("timeout", 5)
+	v.Set("project-path", "/sys/usr/codebeat/")
 
 	offlineQueueFile, err := os.CreateTemp(t.TempDir(), "")
 	require.NoError(t, err)
@@ -102,6 +103,7 @@ func TestSendHeartbeatsWithLocalServer(t *testing.T) {
 	v.Set("plugin", plugin)
 	v.Set("time", 1585598059.1)
 	v.Set("timeout", 5)
+	v.Set("project-path", "/sys/usr/codebeat/")
 
 	offlineQueueFile, err := os.CreateTemp(t.TempDir(), "")
 	require.NoError(t, err)
@@ -109,6 +111,12 @@ func TestSendHeartbeatsWithLocalServer(t *testing.T) {
 
 	err = hearbeatPkg.SendHeartbeats(t.Context(), v, offlineQueueFile.Name())
 	require.NoError(t, err)
+}
 
-	// assert.Eventually(t, func() bool { return numCalls == 1 }, time.Second, 50*time.Millisecond)
+func TestHeartbeatResults(t *testing.T) {
+	data, err := os.ReadFile("testdata/api_heartbeat_list_response.json")
+	require.NoError(t, err)
+
+	_, err = hearbeatAPI.ParseHeartbeatResponses(t.Context(), data)
+	require.NoError(t, err)
 }

@@ -22,12 +22,8 @@
                 "30",
                 "--alternate-project",
                 "Folo",
-                "--project-folder",
+                "--project-path",
                 "e:\\code\\Folo",
-                // "--config",
-                // "C:\\Users\\result17\\.wakatime.cfg",
-                // "--log-file",
-                // "C:\\Users\\result17\\.wakatime\\wakatime.log",
               ],
             "env": {},
             "showLog": true
