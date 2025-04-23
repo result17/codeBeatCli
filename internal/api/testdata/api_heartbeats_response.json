@@ -1,19 +1,17 @@
-{
-    "responses": [
-        [
-            {
-                "data": {
-                    "created_at": "2020-04-14T21:27:15Z",
-                    "cursorpos": 125,
-                    "entity": "testdata/main.go",
-                    "language": "Go",
-                    "lineno": 19,
-                    "lines": 38,
-                    "project": "test-cli",
-                    "time": 1585598059.1
-                }
-            },
-            201
-        ]
-    ]
-}
+[
+    {
+      "data": {
+        "entity": "testdata/main.go",
+        "language": "Go",
+        "cursorpos": 125,
+        "lineno": 19,
+        "lines": 38,
+        "project": "test-cli",
+        "projectPath": "/sys/usr/codebeat/",
+        "userAgent": "codeBeat/unset",
+        "time": 1585598059.1,
+        "id": "84"
+      },
+      "status": 201
+    }
+  ]

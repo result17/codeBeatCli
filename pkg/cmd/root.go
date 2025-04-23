@@ -43,6 +43,7 @@ func setFlags(cmd *cobra.Command, v *viper.Viper) {
 		"",
 		"Absolute path to file for the heartbeat.",
 	)
+	flags.String("api-url", "", "Optional api baseurl.")
 	flags.String("language", "", "The language or file format of entity.")
 	flags.String("alternate-project", "", "Alternate project name.(Optional)")
 	flags.String("config", "", "Plugin config file.(Optional)")

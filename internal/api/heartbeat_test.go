@@ -17,6 +17,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+// TODO FIX response json
 func TestSendHeartbeats(t *testing.T) {
 	testURL, router, tearDown := setupTestServer()
 	defer tearDown()
@@ -89,7 +90,7 @@ func TestSendHeartbeats(t *testing.T) {
 
 func TestSendHeartbeatsToLocalServer(t *testing.T) {
 	var (
-		plugin = "codebeat/0.0.1"
+		plugin = "codebeat/0.0.123"
 	)
 
 	v := viper.New()
