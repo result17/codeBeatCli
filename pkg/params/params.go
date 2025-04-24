@@ -31,7 +31,7 @@ type (
 		ProjectFolder    *string
 		Config           *string
 		LogFile          *string
-		Time             float64
+		Time             int64
 	}
 )
 
@@ -104,9 +104,9 @@ func loadHeartbeatParams(ctx context.Context, v *viper.Viper) (Heartbeat, error)
 	}
 
 	// default now
-	timeVal := float64(time.Now().UnixNano()) / 1e9
+	timeVal := time.Now().UnixMilli()
 	if v.IsSet("time") {
-		if secs := v.GetFloat64("time"); secs > 0 {
+		if secs := v.GetInt64("time"); secs > 0 {
 			timeVal = secs
 		}
 	}

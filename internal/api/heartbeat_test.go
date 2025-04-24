@@ -102,7 +102,7 @@ func TestSendHeartbeatsToLocalServer(t *testing.T) {
 	v.Set("lineno", 19)
 	v.Set("lines-in-file", 38)
 	v.Set("plugin", plugin)
-	v.Set("time", 1585598059.1)
+	v.Set("time", 1585598059100)
 	v.Set("timeout", 5)
 	v.Set("project-path", "/sys/usr/codebeat/")
 
