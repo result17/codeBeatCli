@@ -16,6 +16,7 @@ import (
 	heartbeat "github.com/result17/codeBeatCli/pkg/entity"
 	"github.com/result17/codeBeatCli/pkg/exitcode"
 	"github.com/result17/codeBeatCli/pkg/log"
+	"github.com/result17/codeBeatCli/pkg/today"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
@@ -40,6 +41,12 @@ func RunE(cmd *cobra.Command, v *viper.Viper) error {
 	if entity := v.GetString("entity"); entity != "" {
 		logger.Debugln("Command: heartbeat")
 		_, err := heartbeat.Run(ctx, v)
+		return err
+	}
+
+	if v.GetBool("today") {
+		logger.Debugln("Command: today")
+		_, err := today.Run(ctx, v)
 		return err
 	}
 

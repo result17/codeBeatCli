@@ -41,7 +41,7 @@ func PointerTo[t bool | int | string](v t) *t {
 }
 
 func LoadParams(ctx context.Context, v *viper.Viper) (Params, error) {
-	apiParams, err := loadApiParams(ctx, v)
+	apiParams, err := LoadApiParams(ctx, v)
 	if err != nil {
 		return Params{}, err
 	}
@@ -55,7 +55,7 @@ func LoadParams(ctx context.Context, v *viper.Viper) (Params, error) {
 	}, nil
 }
 
-func loadApiParams(ctx context.Context, v *viper.Viper) (API, error) {
+func LoadApiParams(ctx context.Context, v *viper.Viper) (API, error) {
 	var baseUrl string
 	if baseUrl = vipertools.GetString(v, "api-url"); baseUrl == "" {
 		baseUrl = api.BaseURL

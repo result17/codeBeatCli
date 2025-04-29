@@ -146,3 +146,10 @@ func TestHeartbeatResults(t *testing.T) {
 	_, err = hearbeatAPI.ParseHeartbeatResponses(t.Context(), data)
 	require.NoError(t, err)
 }
+
+func TestOsName(t *testing.T) {
+	hostname, err := os.Hostname()
+	require.NoError(t, err)
+	fmt.Printf("This os hostname is %s", hostname)
+	assert.Equal(t, hostname, "pc name")
+}

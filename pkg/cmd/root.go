@@ -62,6 +62,9 @@ func setFlags(cmd *cobra.Command, v *viper.Viper) {
 	flags.String("log-filer", "", "Absolute path to plugin log file.(Optional)")
 	flags.Int64("time", 0, "Unix epoch timeStamp. Uses current time by default.")
 	flags.String("plugin", "", "Text editor plugin name and version")
+
+	flags.Bool("today", true, "Query today's coding duration")
+
 	err := v.BindPFlags(flags)
 	if err != nil {
 		log.Fatalf("failed to bind cobra flags to viper: %s", err)
