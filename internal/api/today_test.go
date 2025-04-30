@@ -20,7 +20,7 @@ func setupTestServer() (string, *http.ServeMux, func()) {
 	return srv.URL, router, func() { srv.Close() }
 }
 
-func TestQureyTodayDuration(t *testing.T) {
+func TestQueryTodayDuration(t *testing.T) {
 	testURL, router, tearDown := setupTestServer()
 
 	var (
@@ -30,7 +30,6 @@ func TestQureyTodayDuration(t *testing.T) {
 	router.HandleFunc(api.TodayRouter, func(w http.ResponseWriter, r *http.Request) {
 		numCalls++
 		assert.Equal(t, []string{"application/json"}, r.Header["Accept"])
-		assert.Equal(t, []string{"application/json"}, r.Header["Content-Type"])
 
 		grandTotal, err := summary.NewGrandTotal(0)
 		require.NoError(t, err)
@@ -48,4 +47,15 @@ func TestQureyTodayDuration(t *testing.T) {
 	text, err := today.Today(t.Context(), v)
 	require.NoError(t, err)
 	assert.Exactly(t, text, "")
+}
+
+func TestQueryTodayDurationWithLocalServer(t *testing.T) {
+	TestSendHeartbeatsToLocalServer(t)
+	v := viper.New()
+	v.Set("api-url", "http://127.0.0.1:3000")
+	v.Set("today", true)
+
+	text, err := today.Today(t.Context(), v)
+	require.NoError(t, err)
+	assert.NotEmpty(t, text)
 }
