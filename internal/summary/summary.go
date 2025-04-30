@@ -5,11 +5,11 @@ import "fmt"
 type (
 	// GrandTotal represents a breakdown of total time spent
 	GrandTotal struct {
-		Hours   int    `json:"decimal"` // Total hours component
-		Minutes int    `json:"minutes"` // Total minutes component
-		Seconds int    `json:"seconds"` // Total seconds component
+		Hours   uint32 `json:"decimal"` // Total hours component
+		Minutes uint32 `json:"minutes"` // Total minutes component
+		Seconds uint64 `json:"seconds"` // Total seconds component
 		Text    string `json:"text"`    // Human-readable time representation
-		TotalMs int64  `json:"totalMs"` // Total time in milliseconds
+		TotalMs uint64 `json:"totalMs"` // Total time in milliseconds
 	}
 )
 
@@ -25,7 +25,7 @@ const (
 // Returns:
 //   - *GrandTotal: initialized pointer to GrandTotal
 //   - error: if totalMs is negative
-func NewGrandTotal(totalMs int64) (*GrandTotal, error) {
+func NewGrandTotal(totalMs uint64) (*GrandTotal, error) {
 	if totalMs < 0 {
 		return nil, fmt.Errorf("totalMs must be non-negative")
 	}
@@ -36,12 +36,12 @@ func NewGrandTotal(totalMs int64) (*GrandTotal, error) {
 
 	// Calculate all time components at once
 	seconds := totalMs / millisecondsPerSecond
-	gt.Seconds = int(seconds % 60)
+	gt.Seconds = seconds % 60
 
 	minutes := seconds / 60
-	gt.Minutes = int(minutes % 60)
+	gt.Minutes = uint32(minutes % 60)
 
-	gt.Hours = int(minutes / 60)
+	gt.Hours = uint32(minutes / 60)
 
 	gt.Text = gt.FormatDurationText(gt.Hours, gt.Minutes)
 
@@ -49,8 +49,8 @@ func NewGrandTotal(totalMs int64) (*GrandTotal, error) {
 }
 
 // getUnit returns the appropriate unit string (singular or plural)
-func getUnit(value int, singular string) string {
-	if value == 1 {
+func getUnit(value uint32, singular string) string {
+	if value < 2 {
 		return singular
 	}
 	return singular + "s"
@@ -61,7 +61,7 @@ func getUnit(value int, singular string) string {
 // - 0 min
 // - 5 mins
 // - 1 hr 30 mins
-func (gt *GrandTotal) FormatDurationText(hours int, minutes int) string {
+func (gt *GrandTotal) FormatDurationText(hours uint32, minutes uint32) string {
 	if gt.TotalMs <= 0 {
 		return ""
 	}

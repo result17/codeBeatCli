@@ -22,7 +22,6 @@ func (c *Client) Today(ctx context.Context) (*summary.GrandTotal, error) {
 	if err != nil {
 		return nil, fmt.Errorf("Failed to create request: %s", err)
 	}
-	req.Header.Set("Content-Type", "application/json")
 
 	resp, err := c.Do(ctx, req)
 	defer resp.Body.Close()

@@ -31,7 +31,7 @@ type (
 		ProjectFolder    *string
 		Config           *string
 		LogFile          *string
-		Time             int64
+		Time             uint64
 	}
 )
 
@@ -93,9 +93,9 @@ func loadHeartbeatParams(ctx context.Context, v *viper.Viper) (Heartbeat, error)
 		alternateProject = PointerTo(vipertools.GetString(v, "alternate-project"))
 	}
 
-	var projectFloder *string
+	var projectFolder *string
 	if v.IsSet("project-path") {
-		projectFloder = PointerTo(vipertools.GetString(v, "project-path"))
+		projectFolder = PointerTo(vipertools.GetString(v, "project-path"))
 	}
 
 	var language *string
@@ -118,8 +118,8 @@ func loadHeartbeatParams(ctx context.Context, v *viper.Viper) (Heartbeat, error)
 		CursorPos:        cursorPos,
 		LineInFile:       lineInFile,
 		AlternateProject: alternateProject,
-		ProjectFolder:    projectFloder,
-		Time:             timeVal,
+		ProjectFolder:    projectFolder,
+		Time:             uint64(timeVal),
 		Language:         language,
 	}, nil
 }

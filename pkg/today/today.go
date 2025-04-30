@@ -13,16 +13,15 @@ import (
 
 // Run executes the today command.
 func Run(ctx context.Context, v *viper.Viper) (int, error) {
+	logger := log.Extract(ctx)
 	output, err := Today(ctx, v)
 	if err != nil {
-
+		logger.Errorf("failed fetched today for status bar, %s", err)
 		return exitcode.ErrGeneric, fmt.Errorf(
 			"today fetch failed: %s",
 			err,
 		)
 	}
-
-	logger := log.Extract(ctx)
 
 	logger.Debugln("successfully fetched today for status bar")
 
