@@ -1,0 +1,71 @@
+{
+    "grandTotal": {
+      "hours": 0,
+      "minutes": 37,
+      "seconds": 53,
+      "text": "37 mins",
+      "total_ms": 2273512
+    },
+    "timeline": [
+      {
+        "start": 1746068689005,
+        "project": "codebeat-server",
+        "duration": 0
+      },
+      {
+        "start": 1746068746688,
+        "project": "pokerogue",
+        "duration": 0
+      },
+      {
+        "start": 1746068783982,
+        "project": "pokerogue",
+        "duration": 682232
+      },
+      {
+        "start": 1746070458414,
+        "project": "pokerogue",
+        "duration": 0
+      },
+      {
+        "start": 1746087965129,
+        "project": "pokerogue",
+        "duration": 0
+      },
+      {
+        "start": 1746087975489,
+        "project": "pokerogue",
+        "duration": 0
+      },
+      {
+        "start": 1746088383436,
+        "project": "vscode-extension-samples",
+        "duration": 0
+      },
+      {
+        "start": 1746088525583,
+        "project": "vscode-extension-samples",
+        "duration": 454537
+      },
+      {
+        "start": 1746089802322,
+        "project": "vscode-extension-samples",
+        "duration": 0
+      },
+      {
+        "start": 1746089818850,
+        "project": "vscode-extension-samples",
+        "duration": 246844
+      },
+      {
+        "start": 1746090960555,
+        "project": "vscode-extension-samples",
+        "duration": 0
+      },
+      {
+        "start": 1746091346810,
+        "project": "vscode-extension-samples",
+        "duration": 889899
+      }
+    ]
+  }
