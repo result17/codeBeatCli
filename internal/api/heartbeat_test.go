@@ -10,14 +10,13 @@ import (
 	"testing"
 	"time"
 
-	hearbeatAPI "github.com/result17/codeBeatCli/internal/api"
+	heartbeatAPI "github.com/result17/codeBeatCli/internal/api"
 	hearbeatPkg "github.com/result17/codeBeatCli/pkg/entity"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
-// TODO FIX response json
 func TestSendHeartbeats(t *testing.T) {
 	testURL, router, tearDown := setupTestServer()
 	defer tearDown()
@@ -36,7 +35,7 @@ func TestSendHeartbeats(t *testing.T) {
 	v.Set("lineno", 19)
 	v.Set("lines-in-file", 38)
 	v.Set("plugin", plugin)
-	v.Set("time", 1585598059.1)
+	v.Set("time", 1585598059100)
 	v.Set("timeout", 5)
 	v.Set("project-path", "/sys/usr/codebeat/")
 
@@ -44,7 +43,7 @@ func TestSendHeartbeats(t *testing.T) {
 	require.NoError(t, err)
 	defer offlineQueueFile.Close()
 
-	router.HandleFunc(hearbeatAPI.CollectHeartbeatRouter, func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc(heartbeatAPI.CollectHeartbeatRouter, func(w http.ResponseWriter, r *http.Request) {
 		numCalls++
 		assert.Equal(t, []string{"application/json"}, r.Header["Accept"])
 		assert.Equal(t, []string{"application/json"}, r.Header["Content-Type"])
@@ -143,7 +142,7 @@ func TestHeartbeatResults(t *testing.T) {
 	data, err := os.ReadFile("testdata/api_heartbeat_list_response.json")
 	require.NoError(t, err)
 
-	_, err = hearbeatAPI.ParseHeartbeatResponses(t.Context(), data)
+	_, err = heartbeatAPI.ParseHeartbeatResponses(t.Context(), data)
 	require.NoError(t, err)
 }
 
