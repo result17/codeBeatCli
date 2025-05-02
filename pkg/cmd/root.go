@@ -63,7 +63,8 @@ func setFlags(cmd *cobra.Command, v *viper.Viper) {
 	flags.Int64("time", 0, "Unix epoch timeStamp. Uses current time by default.")
 	flags.String("plugin", "", "Text editor plugin name and version")
 
-	flags.Bool("today", true, "Query today's coding duration")
+	flags.Bool("today-duration", false, "Query today's coding duration")
+	flags.Bool("today-summary", false, "Query today's summary")
 
 	err := v.BindPFlags(flags)
 	if err != nil {

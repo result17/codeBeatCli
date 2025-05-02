@@ -13,10 +13,10 @@ import (
 	"go.uber.org/zap/zapcore"
 
 	"github.com/result17/codeBeatCli/internal/version"
+	"github.com/result17/codeBeatCli/pkg/duration"
 	heartbeat "github.com/result17/codeBeatCli/pkg/entity"
 	"github.com/result17/codeBeatCli/pkg/exitcode"
 	"github.com/result17/codeBeatCli/pkg/log"
-	"github.com/result17/codeBeatCli/pkg/today"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
@@ -44,9 +44,15 @@ func RunE(cmd *cobra.Command, v *viper.Viper) error {
 		return err
 	}
 
-	if v.GetBool("today") {
-		logger.Debugln("Command: today")
-		_, err := today.Run(ctx, v)
+	if v.GetBool("today-duration") {
+		logger.Debugln("Command: today-duration")
+		_, err := duration.Run(ctx, v)
+		return err
+	}
+
+	if v.GetBool("today-summary") {
+		logger.Debugln("command: today-summary")
+		_, err := duration.Run(ctx, v)
 		return err
 	}
 

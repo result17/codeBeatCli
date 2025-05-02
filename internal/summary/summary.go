@@ -11,6 +11,17 @@ type (
 		Text    string `json:"text"`    // Human-readable time representation
 		TotalMs uint64 `json:"totalMs"` // Total time in milliseconds
 	}
+
+	TimelineItem struct {
+		Start    uint64 `json:"start"`    // The Beginning timestamp of heartbeat
+		Duration uint64 `json:"duration"` // The duration between heartbeat range
+		Project  string `json:"project"`  // Project name
+	}
+
+	Summary struct {
+		GrandTotal GrandTotal     `json:"grandTotal"`
+		Timeline   []TimelineItem `json:"timeline"`
+	}
 )
 
 const (
