@@ -12,13 +12,14 @@ import (
 )
 
 const (
-	TodayRouter = "/api/duration/today"
+	TodayDurationAPIRouter = "/api/duration/today"
 )
 
-func (c *Client) Today(ctx context.Context) (*summary.GrandTotal, error) {
-	url := c.baseURL + TodayRouter
+func (c *Client) TodayDuration(ctx context.Context) (*summary.GrandTotal, error) {
+	url := c.baseURL + TodayDurationAPIRouter
 
 	req, err := http.NewRequest(http.MethodGet, url, nil)
+	req.Header.Add("Accept", "application/json")
 	if err != nil {
 		return nil, fmt.Errorf("Failed to create request: %s", err)
 	}
@@ -46,14 +47,14 @@ func (c *Client) Today(ctx context.Context) (*summary.GrandTotal, error) {
 		)
 	}
 
-	grandTotal, err := ParseGrandTotalResponse(body)
+	grandTotal, err := ParseClientGrandTotalResponse(body)
 	if err != nil {
-		return nil, fmt.Errorf("Failed to parse results %s", err)
+		return nil, fmt.Errorf("Failed to parse today-duration results %s", err)
 	}
 	return grandTotal, nil
 }
 
-func ParseGrandTotalResponse(data []byte) (*summary.GrandTotal, error) {
+func ParseClientGrandTotalResponse(data []byte) (*summary.GrandTotal, error) {
 	var body summary.GrandTotal
 	if err := json.Unmarshal(data, &body); err != nil {
 		return nil, fmt.Errorf("Failed to parse json response: %s. body: %q", err, data)
