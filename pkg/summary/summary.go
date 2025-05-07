@@ -24,19 +24,18 @@ func Run(ctx context.Context, v *viper.Viper) (int, error) {
 			err,
 		)
 	}
+
 	logger.Debugln("Successfully fetched today-summary")
 
-	var output []byte
-
-	err = json.Unmarshal(output, summary)
+	output, err := json.Marshal(summary)
 	if err != nil {
-		logger.Errorf("Failed unmarshal summary, %s", err)
+		logger.Errorf("Failed marshal summary, %s, %+v", err, summary)
 		return exitcode.ErrGeneric, fmt.Errorf(
 			"Summary unmarshal failed: %s",
 			err,
 		)
 	}
-	fmt.Println(output)
+	fmt.Println(string(output))
 	return exitcode.Success, nil
 }
 

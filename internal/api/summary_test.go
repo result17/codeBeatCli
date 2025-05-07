@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/result17/codeBeatCli/internal/api"
+	"github.com/result17/codeBeatCli/pkg/exitcode"
 	summaryPkg "github.com/result17/codeBeatCli/pkg/summary"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
@@ -43,4 +44,15 @@ func TestQueryTodaySummary(t *testing.T) {
 	assert.Exactly(t, summary.GrandTotal.Text, "37 mins")
 	assert.Exactly(t, len(summary.Timeline), 12)
 	assert.Eventually(t, func() bool { return numCalls == 1 }, time.Second, 50*time.Millisecond)
+}
+
+func TestQueryTodaySummaryWithLocalServer(t *testing.T) {
+
+	v := viper.New()
+	v.Set("api-url", "http://127.0.0.1:3000")
+	v.Set("today-summary", true)
+
+	code, err := summaryPkg.Run(t.Context(), v)
+	require.NoError(t, err)
+	assert.Exactly(t, code, exitcode.Success)
 }

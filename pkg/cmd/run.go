@@ -17,6 +17,7 @@ import (
 	heartbeat "github.com/result17/codeBeatCli/pkg/entity"
 	"github.com/result17/codeBeatCli/pkg/exitcode"
 	"github.com/result17/codeBeatCli/pkg/log"
+	"github.com/result17/codeBeatCli/pkg/summary"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
@@ -52,7 +53,7 @@ func RunE(cmd *cobra.Command, v *viper.Viper) error {
 
 	if v.GetBool("today-summary") {
 		logger.Debugln("command: today-summary")
-		_, err := duration.Run(ctx, v)
+		_, err := summary.Run(ctx, v)
 		return err
 	}
 
