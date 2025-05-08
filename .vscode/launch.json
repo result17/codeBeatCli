@@ -2,31 +2,32 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Debug with heartbeat args",
+            "name": "Launch main.go",
             "type": "go",
             "request": "launch",
-            "mode": "debug",
-            "program": "${workspaceFolder}/cmd/app",
-            "args": [
-                "--local-save",
-                "--dlog",
-                "--entity",
-                "e:\\code\\Folo\\apps\\mobile\\src\\App.tsx",
-                "--plugin",
-                "Visual Studio Code_1.99.2/codebeat_0.0.0",
-                "--lineno",
-                "7",
-                "--cursorpos",
-                "30",
-                "--lines-in-file",
-                "30",
-                "--alternate-project",
-                "Folo",
-                "--project-path",
-                "e:\\code\\Folo",
-              ],
+            "mode": "auto",
+            "program": "${workspaceFolder}/cmd/app/main.go",
             "env": {},
+            "args": [],
+            "showLog": true,
+            "buildFlags": "",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Debug test",
+            "type": "go",
+            "request": "launch",
+            "mode": "test",
+            "program": "${workspaceFolder}",
             "showLog": true
+        },
+        {
+            "name": "Attach to process",
+            "type": "go",
+            "request": "attach",
+            "mode": "local",
+            "processId": 0
         }
     ]
 }
