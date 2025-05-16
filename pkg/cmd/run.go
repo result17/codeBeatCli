@@ -17,6 +17,7 @@ import (
 	heartbeat "github.com/result17/codeBeatCli/pkg/entity"
 	"github.com/result17/codeBeatCli/pkg/exitcode"
 	"github.com/result17/codeBeatCli/pkg/log"
+	metricPkg "github.com/result17/codeBeatCli/pkg/metric"
 	"github.com/result17/codeBeatCli/pkg/summary"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
@@ -55,6 +56,14 @@ func RunE(cmd *cobra.Command, v *viper.Viper) error {
 		logger.Debugln("command: today-summary")
 		_, err := summary.Run(ctx, v)
 		return err
+	}
+
+	if metricKey := v.GetString("today-metric-duration"); metricKey != "" {
+		logger.Debugln("command: today-metric-duration")
+		_, err := metricPkg.TypeRun(ctx, v, metricKey)
+		if err != nil {
+			return err
+		}
 	}
 
 	_ = cmd.Help()

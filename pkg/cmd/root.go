@@ -65,6 +65,7 @@ func setFlags(cmd *cobra.Command, v *viper.Viper) {
 
 	flags.Bool("today-duration", false, "Query today's coding duration")
 	flags.Bool("today-summary", false, "Query today's summary")
+	flags.String("today-metric-duration", "", "Query today's coding duration by metric")
 
 	err := v.BindPFlags(flags)
 	if err != nil {
