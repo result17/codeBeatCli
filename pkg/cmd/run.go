@@ -53,17 +53,15 @@ func RunE(cmd *cobra.Command, v *viper.Viper) error {
 	}
 
 	if v.GetBool("today-summary") {
-		logger.Debugln("command: today-summary")
+		logger.Debugln("Command: today-summary")
 		_, err := summary.Run(ctx, v)
 		return err
 	}
 
 	if metricKey := v.GetString("today-metric-duration"); metricKey != "" {
-		logger.Debugln("command: today-metric-duration")
+		logger.Debugln("Command: today-metric-duration")
 		_, err := metricPkg.TypeRun(ctx, v, metricKey)
-		if err != nil {
-			return err
-		}
+		return err
 	}
 
 	_ = cmd.Help()
