@@ -5,7 +5,7 @@ import "fmt"
 type (
 	// GrandTotal represents a breakdown of total time spent
 	GrandTotal struct {
-		Hours   uint32 `json:"decimal"` // Total hours component
+		Hours   uint32 `json:"hours"`   // Total hours component
 		Minutes uint32 `json:"minutes"` // Total minutes component
 		Seconds uint64 `json:"seconds"` // Total seconds component
 		Text    string `json:"text"`    // Human-readable time representation
